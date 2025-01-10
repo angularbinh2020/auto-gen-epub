@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@lesjoursfr/html-to-epub": "^4.4.2"
+  }
+}
