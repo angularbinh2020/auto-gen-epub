@@ -4,10 +4,11 @@ import { resolve } from "path";
 import { exportWikidich } from "./export-wikidich.mjs";
 import { fileURLToPath } from "url";
 import { dateFormat, getFileName } from "./utils.mjs";
+import { exportNtruyen } from "./export-ntruyen.mjs";
 // import { convertToAzw3 } from "./convert-to-azw3.mjs";
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 export const genEbook = async ({ maxChapter, startChapterUrl }) => {
-  const { chapters, bookTitle, endChapterUrl } = await exportWikidich({
+  const { chapters, bookTitle, endChapterUrl } = await exportNtruyen({
     startChapterUrl: startChapterUrl,
     maxChapter: maxChapter,
   });

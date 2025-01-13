@@ -1,10 +1,9 @@
 //@ts-check
 import { GetHtmlString } from "./fetch.mjs";
 import HtmlParse from "node-html-parser";
-import { WIKIDICH_SELECTOR } from "./wikidich-selector.mjs";
-import { fileURLToPath } from "url";
 import { waitToTimeout } from "./utils.mjs";
-export const exportWikidich = async ({ startChapterUrl, maxChapter }) => {
+import { NTRUYEN_SELECTOR } from "./ntruyen-selector.mjs";
+export const exportNtruyen = async ({ startChapterUrl, maxChapter }) => {
   console.log(`Start export book : ${startChapterUrl}`);
   const chapters = [];
   let chapterIndex = 1;
@@ -17,14 +16,16 @@ export const exportWikidich = async ({ startChapterUrl, maxChapter }) => {
     const htmlDom = HtmlParse.parse(htmlString);
     if (!bookTitle) {
       bookTitle = htmlDom
-        .querySelector(WIKIDICH_SELECTOR.BOOK_TITLE)
-        .innerText.trim();
+        .querySelector(NTRUYEN_SELECTOR.BOOK_TITLE)
+        .getAttribute("value")
+        .trim();
     }
     const chapterTitle = htmlDom
-      .querySelector(WIKIDICH_SELECTOR.CHAPTER_TITLE)
-      .innerText.trim();
+      .querySelector(NTRUYEN_SELECTOR.CHAPTER_TITLE)
+      .getAttribute("value")
+      .trim();
     const chapterContent = htmlDom
-      .querySelector(WIKIDICH_SELECTOR.CHAPTER_CONTENT)
+      .querySelector(NTRUYEN_SELECTOR.CHAPTER_CONTENT)
       .innerHTML.trim();
     chapters.push({
       title: chapterTitle,
@@ -32,12 +33,11 @@ export const exportWikidich = async ({ startChapterUrl, maxChapter }) => {
     });
 
     const nextChapterLink = htmlDom.querySelector(
-      WIKIDICH_SELECTOR.NEXT_CHAPTER_LINK
+      NTRUYEN_SELECTOR.NEXT_CHAPTER_LINK
     );
     await waitToTimeout(5 + Math.round(Math.random() * 5));
     if (nextChapterLink && chapterIndex < maxChapter) {
-      chapterUrl =
-        urlObject.origin + nextChapterLink.getAttribute("href").trim();
+      chapterUrl = nextChapterLink.getAttribute("href").trim();
     } else {
       break;
     }
